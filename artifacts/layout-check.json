@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "scenes": 8,
+  "viewportWidths": [
+    2048,
+    1672,
+    1440,
+    1280,
+    1151,
+    1024,
+    768,
+    390,
+    320
+  ],
+  "checks": [
+    "vertical PC and server columns",
+    "aligned subnet baselines",
+    "no device floor circles",
+    "compact header order and no overlaps",
+    "DNS packet follows its original SW1 link"
+  ],
+  "errors": []
+}

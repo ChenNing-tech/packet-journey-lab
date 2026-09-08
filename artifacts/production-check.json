@@ -1,0 +1,40 @@
+{
+  "build": "production dist served by vite preview",
+  "scenes": [
+    {
+      "title": "同一局域网内 Ping",
+      "status": "实验已完成步骤 26 / 26"
+    },
+    {
+      "title": "跨网段 Ping",
+      "status": "实验已完成步骤 56 / 56"
+    },
+    {
+      "title": "ARP 地址解析",
+      "status": "实验已完成步骤 14 / 14"
+    },
+    {
+      "title": "访问 Web 服务器",
+      "status": "实验已完成步骤 208 / 208"
+    },
+    {
+      "title": "DNS 域名解析",
+      "status": "实验已完成步骤 27 / 27"
+    },
+    {
+      "title": "DHCP 自动获取地址",
+      "status": "实验已完成步骤 22 / 22"
+    },
+    {
+      "title": "TCP 三次握手",
+      "status": "实验已完成步骤 72 / 72"
+    },
+    {
+      "title": "TCP 连接释放",
+      "status": "实验已完成步骤 137 / 137"
+    }
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "result": "PASS"
+}

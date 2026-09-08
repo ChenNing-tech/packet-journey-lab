@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "checks": [
+    "TTL / MAC actual old-new comparison",
+    "unchanged end-to-end IP labels",
+    "right-side equipment view and Escape",
+    "unique SVG gradient IDs",
+    "mobile fit and detailed view",
+    "active device centering",
+    "no page overflow",
+    "DNS and DHCP service equipment rendering"
+  ],
+  "errors": []
+}

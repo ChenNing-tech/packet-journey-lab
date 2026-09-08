@@ -1,0 +1,25 @@
+import { chromium } from '@playwright/test';
+import { mkdir, writeFile } from 'node:fs/promises';
+
+await mkdir('artifacts', { recursive: true });
+const browser = await chromium.launch({ executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE });
+const page = await browser.newPage({ viewport: { width: 1672, height: 1000 }, deviceScaleFactor: 1 });
+const errors = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+await page.goto('http://127.0.0.1:5173/');
+await page.screenshot({ path: 'artifacts/refined-default.png', fullPage: true });
+await page.getByRole('button', { name: /跨网段 Ping/ }).click();
+await page.getByTestId('event-33').click();
+await page.evaluate(() => window.scrollTo(0, 0));
+await page.screenshot({ path: 'artifacts/refined-routing.png', fullPage: true });
+await page.getByRole('button', { name: '查看 R1 设备详情' }).click();
+await page.screenshot({ path: 'artifacts/refined-device-dock.png', fullPage: true });
+await page.getByRole('button', { name: '收起设备透视' }).click();
+await page.setViewportSize({ width: 390, height: 844 });
+await page.screenshot({ path: 'artifacts/refined-mobile.png', fullPage: true });
+const mobileOverflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
+const report = { errors, mobileOverflow };
+await writeFile('artifacts/refinement-visual-check.json', JSON.stringify(report, null, 2));
+console.log(JSON.stringify(report));
+await browser.close();

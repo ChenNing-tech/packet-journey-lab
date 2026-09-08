@@ -1,0 +1,281 @@
+/* Reference-led classroom presentation. The protocol engine is unchanged. */
+:root { --page: #f3f7fc; --line: #dce6f3; --blue: #0865ee; }
+body { background: var(--page); font-size: 14px; }
+.app-header { height: 96px; padding: 0 22px; display: grid; grid-template-columns: minmax(300px, 380px) minmax(0,1fr) 164px; gap: 20px; background: linear-gradient(110deg,#fff 70%,#f8fbff); }
+.brand { gap: 12px; }
+.brand-icon { width: 48px; height: 48px; border-radius: 13px; background: #0865ee; }
+.brand h1 { font-size: 22px; font-weight: 750; letter-spacing: -.5px; }
+.brand p { font-size: 11px; letter-spacing: 1.15px; margin-top: 6px; color: #788daf; }
+.brand p span, .teaching-badge { display: none; }
+.app-header .playback-bar { margin: 0; padding: 0; border: 0; box-shadow: none; background: none; min-height: 62px; overflow: visible; border-radius: 0; flex-wrap: nowrap; gap: 16px; justify-self: center; }
+.primary-controls { gap: 8px; }
+.primary-controls .play-button, .primary-controls .control-button, .primary-controls .labeled-control { height: 63px; min-width: 58px; padding: 9px 12px; display: flex; flex-direction: column; justify-content: center; gap: 7px; border: 1px solid #dce5f0; border-radius: 10px; font-size: 11px; background: #fff; color: #52637a; }
+.primary-controls .play-button { min-width: 64px; background: var(--blue); color: #fff; border-color: var(--blue); order: 1; }
+.primary-controls .play-button.is-playing { background: var(--blue); color: #fff; }
+.primary-controls .control-button:first-of-type { order: 0; }
+.primary-controls .control-button:nth-of-type(2) { order: 0; }
+.primary-controls .control-button:nth-of-type(3) { order: 2; }
+.primary-controls .labeled-control { order: 3; }
+.primary-controls .labeled-control:last-of-type { order: 5; }
+.primary-controls .control-button span { display: inline; font-size: 11px; }
+.primary-controls .control-button svg, .primary-controls .play-button svg, .primary-controls .labeled-control svg { width: 19px; height: 19px; }
+.primary-controls .control-divider { display: none; }
+.primary-controls .control-button:hover:not(:disabled), .primary-controls .labeled-control:hover:not(:disabled) { background: #f0f6ff; border-color: #a9c9f7; }
+.primary-controls .play-button:hover:not(:disabled) { background: #075bd4; }
+.speed-control { order: 4; margin: 0; height: 63px; min-width: 67px; display: flex; flex-direction: column-reverse; justify-content: center; gap: 4px; border: 1px solid #dce5f0; border-radius: 10px; background: #fff; }
+.speed-control > span { display: block; font-size: 11px; color: #52637a; }
+.speed-control select { min-height: 26px; padding: 0 3px; background: transparent; font-size: 13px; color: #293f5d; }
+.secondary-controls { gap: 3px; }
+.secondary-controls > .control-divider { display: none; }
+.teacher-toggle { padding: 6px; flex-direction: column; gap: 5px; font-size: 10px; }
+.teacher-toggle span { font-size: 10px; }
+.teacher-toggle i { display: none; }
+.teacher-toggle.on { color: #1766c5; }
+.header-actions { gap: 10px; justify-content: flex-end; }
+.header-actions .scenario-status { display: block; border-radius: 10px; background: #edf4ff; padding: 13px 12px; font-size: 0; text-align: center; white-space: nowrap; }
+.header-actions .scenario-status .status-dot, .header-actions .status-separator { display: none; }
+.header-actions .scenario-status strong { font-size: 25px; color: #0662e7; font-weight: 700; }
+.header-actions .scenario-status strong::before { content: '步骤 '; font-size: 12px; color: #364c6c; font-weight: 500; }
+.header-actions .scenario-status strong span { font-size: 13px; color: #61738f; }
+.header-actions .quiet-button { font-size: 0; padding: 4px; color: #7188a8; }
+.header-actions .quiet-button svg { width: 19px; height: 19px; }
+.workspace { grid-template-columns: 218px minmax(0,1fr); }
+.sidebar { padding: 20px 12px 18px; position: sticky; top: 0; height: calc(100dvh - 96px); overflow-y: auto; align-self: start; background: #fbfcff; }
+.sidebar-heading { font-size: 15px; color: #233b5d; padding: 0 7px; }
+.sidebar-subtitle { color: #6b7f9b; padding: 9px 7px 17px; }
+.scenario-nav { gap: 8px; }
+.scenario-button { min-height: 73px; padding: 10px 9px; gap: 9px; border: 1px solid #dee6f0; border-radius: 9px; background: #fff; }
+.scenario-button.selected { background: #edf5ff; border-color: #3384f5; box-shadow: inset 0 0 0 .5px #3384f5; }
+.scenario-button:hover { background: #f2f7ff; border-color: #b4cef2; }
+.scenario-icon { width: 38px; height: 42px; align-self: center; padding: 0; flex: 0 0 38px; }
+.equipment-icon { display: block; width: 100%; height: 100%; overflow: visible; }
+.scenario-icon .equipment-icon { width: 100%; height: 100%; }
+.scenario-button strong { font-size: 11px; color: #2c415e; font-weight: 600; }
+.scenario-button.selected strong { color: #0865ee; }
+.scenario-button-content > span { color: #627891; font-size: 8px; gap: 4px; margin-top: 7px; }
+.scenario-button-content small { font-size: 8px; color: #6b7f98; margin-top: 4px; }
+.scenario-number { display: none; }
+.scenario-button > svg { width: 10px; }
+.sidebar-learning { margin: 19px 7px 0; padding-top: 17px; }
+.sidebar-learning p { color: #677c99; font-size: 11px; }
+.sidebar-learning h3 { font-size: 12px; }
+.fault-control { margin: 17px 5px 0; padding: 12px 10px; background: #f2f6fc; }
+.fault-control label { font-size: 11px; }
+.fault-control select { font-size: 11px; }
+.fault-control p { color: #6b7e98; }
+.sidebar-footer { margin-top: 20px; }
+.main-content { padding: 13px 15px 0; margin: 0; max-width: none; }
+.page-heading { margin-bottom: 12px; }
+.breadcrumb { display: none; }
+.page-title-row { min-height: 32px; }
+.page-title-row > div:first-child { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.page-title-row h2 { font-size: 17px; color: #2e486c; font-weight: 650; gap: 9px; }
+.page-title-row p { font-size: 11px; color: #6e829f; margin: 0; }
+.panel { border-color: #d6e2f2; border-radius: 10px; box-shadow: 0 2px 4px #335d9403; }
+.lab-columns { grid-template-columns: minmax(0,1fr) 320px; gap: 14px; align-items: stretch; }
+.lab-center { gap: 12px; }
+.lab-right { display: flex; min-width: 0; }
+.panel-heading { padding: 0 16px; height: 48px; min-height: 48px; border-color: #e8eef7; }
+.panel-heading h2 { font-size: 14px; color: #233c5e; gap: 7px; }
+.panel-heading h2 > svg { color: #4c78ad; }
+.small-tag { color: #607ba0; background: #edf3fc; font-size: 9px; }
+.topology-actions { display: flex; align-items: center; gap: 12px; }
+.topology-actions button { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #56739a; background: transparent; padding: 5px 0; min-height: 32px; }
+.topology-actions button:hover { color: #0865ee; }
+.check-label { font-size: 10px; color: #5d7495; }
+.topology-canvas { background: linear-gradient(180deg,#fff,#fcfdff); }
+.canvas-note { top: 12px; left: 17px; right: 17px; font-size: 10px; color: #647c9a; }
+.canvas-note-secondary { font-size: 9px; color: #7388a4; display: inline; }
+.topology-viewport { overflow-x: auto; overflow-y: hidden; }
+.topology-svg { display: block; width: 100%; height: clamp(350px,40vh,440px); min-height: 0; max-height: none; }
+.device-node > .device-hitbox, .device-node:hover > .device-hitbox { stroke: none; stroke-width: 0; }
+.device-node:hover .device-selection, .device-node:focus-visible .device-selection { opacity: 1; stroke: #0965e7; stroke-width: 1.6; }
+.device-name { font-size: 19px; font-weight: 650; fill: #1b304d; }
+.device-address { font-family: "Segoe UI",sans-serif; font-size: 13px; fill: #536d8f; }
+.device-mac { font-size: 11px; fill: #7486a1; letter-spacing: -.2px; }
+.link-label { font-size: 10px; fill: #7088a8; }
+.endpoint-label { font-size: 16px; font-weight: 650; fill: #126bf0; }
+.current-location text { font-size: 14px; font-weight: 600; }
+.subnet-badge rect { fill: #f8fbff; stroke: #75a8f3; }
+.subnet-badge text { fill: #2675df; font-size: 13px; font-family: "Segoe UI",sans-serif; }
+.process-title { font-size: 13px; font-weight: 650; fill: #2b4262; }
+.process-caption { font-size: 9px; fill: #7790af; }
+.canvas-instruction { font-size: 10px; fill: #7288a6; }
+.topology-pan-hint { display: none; }
+.topology-legend { height: 33px; gap: 18px; font-size: 10px; border-color: #edf2f9; background: #fcfdff; }
+.topology-legend .legend-note { font-size: 9px; margin-left: 5px; }
+.topology-legend i { width: 7px; height: 7px; }
+.event-focus { min-height: 81px; padding: 12px 16px; align-items: flex-start; gap: 11px; background: #f5f9ff; }
+.event-step { background: #e1edff; color: #206dce; width: 30px; min-width: 30px; height: 31px; font-size: 13px; }
+.event-focus-title { margin-top: 2px; }
+.event-focus-title h3 { font-size: 13px; }
+.event-focus p { font-size: 11px; color: #5b7395; line-height: 1.8; margin-top: 5px; }
+.protocol-badge { font-size: 10px; padding: 4px 6px; }
+.inspector { height: calc(clamp(350px,40vh,440px) + 164px); display: flex; flex-direction: column; }
+.inspector-intro { min-height: 35px; padding: 8px 13px; font-size: 10px; color: #657d9e; }
+.inspector-body { padding: 0 12px 12px; flex: 1; max-height: none; min-height: 0; }
+.packet-summary { padding: 8px 10px; margin-bottom: 10px; background: #f1f6fc; }
+.packet-summary strong { font-size: 12px; }
+.packet-summary small { font-size: 9px; color: #6b83a3; margin-top: 3px; }
+.packet-layer { margin-bottom: 9px; border-color: var(--layer-border,#d8e3f2); }
+.packet-layer.layer-active { border-color: var(--layer-border,#b0cbf3); }
+.packet-layer-ethernet, .packet-layer-arp { --layer-color: #b86b14; --layer-border: #efbd79; --layer-fill: #fff7ec; }
+.packet-layer-ipv4 { --layer-color: #187ac4; --layer-border: #87b9ec; --layer-fill: #eff7ff; }
+.packet-layer-icmp { --layer-color: #8650c8; --layer-border: #be9bea; --layer-fill: #f6f0fe; }
+.packet-layer-tcp, .packet-layer-udp { --layer-color: #197da4; --layer-border: #9acddd; --layer-fill: #eef9fc; }
+.packet-layer-application { --layer-color: #28865b; --layer-border: #8acbb1; --layer-fill: #effaf5; }
+.layer-heading { background: var(--layer-fill,#f6f9fe); padding: 9px 10px; min-height: 42px; gap: 8px; }
+.layer-heading strong { color: var(--layer-color,#426594); font-size: 12px; }
+.layer-heading small { display: none; }
+.layer-heading .chevron { color: var(--layer-color); }
+.layer-heading:hover { background: var(--layer-fill); filter: brightness(.985); }
+.layer-level { font-size: 9px; padding: 4px; color: var(--layer-color); background: #ffffff9c; }
+.packet-fields { padding: 0 9px 2px; }
+.packet-fields > div { padding: 8px 1px; gap: 5px; border-color: #edf1f7; min-height: 34px; align-items: center; }
+.packet-fields dt { color: #59708e; font-size: 10px; max-width: 35%; line-height: 1.5; }
+.packet-fields dt small { display: none; }
+.packet-fields dd { font-size: 10px; color: #293f5e; line-height: 1.7; }
+.packet-fields .field-highlight { background: #fffaee; }
+.packet-fields .field-changed { background: #fff7e9; }
+.packet-fields .field-highlight dd { color: #865c16; font-weight: 500; }
+.field-change-tag { display: inline-block; font-family: "Segoe UI","Microsoft YaHei",sans-serif; font-size: 8px; margin-left: 5px; padding: 0 3px; border-radius: 3px; }
+.field-change-tag.changed { color: #a85d11; background: #fff0d9; }
+.field-change-tag.stable { color: #6b7e98; background: #eef2f8; }
+.old-field-value { display: block; font-size: 8px; color: #7c8ba0; font-weight: 400; }
+.more-fields summary { font-size: 9px; padding: 6px 11px 8px; color: #6b82a2; cursor: pointer; background: #fbfcfe; }
+.more-fields .packet-fields dt { max-width: 38%; }
+.field-legend { display: flex; align-items: center; gap: 10px; margin: 12px 1px 0; flex-wrap: wrap; font-size: 9px; color: #6b80a0; }
+.field-legend > span { display: flex; align-items: center; gap: 5px; }
+.field-legend > span:last-child { font-size: 8px; margin-left: auto; }
+.field-legend i { width: 6px; height: 6px; border-radius: 50%; background: #94a6bf; }
+.field-legend i.changed { background: #e69d35; }
+.packet-footnote { font-size: 9px; color: #6e81a0; }
+.fcs-strip { padding: 7px 8px; font-size: 9px; color: #687e9f; }
+.empty-packet { padding: 38px 8px 25px; }
+.empty-packet h3 { color: #445f83; font-size: 14px; }
+.empty-packet p { color: #6d83a2; font-size: 12px; }
+.empty-packet-icon { color: #6f92bd; background: #eff5fe; }
+.layer-preview span { color: #6d85a5; border-color: #cfdef1; }
+.lesson-bottom { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 14px; margin-top: 14px; align-items: stretch; }
+.lesson-bottom.without-teacher { grid-template-columns: minmax(0,1fr); }
+.timeline-panel { margin: 0; display: flex; flex-direction: column; min-width: 0; }
+.timeline-panel .panel-heading { height: 43px; min-height: 43px; order: 0; }
+.timeline-panel .panel-heading .tiny-note { font-size: 9px; color: #7388a5; }
+.phase-jumps { padding: 0 14px 8px; gap: 5px; order: 1; min-height: 33px; }
+.phase-jumps button { padding: 5px 8px; min-height: 26px; font-size: 9px; background: #f4f7fc; color: #6c83a1; }
+.phase-jumps button.active { background: #e8f1ff; color: #2a6ccb; }
+.timeline-events { order: 2; padding: 10px 14px 6px; gap: 12px; min-height: 143px; flex: 1; }
+.timeline-event { min-width: 174px; max-width: 174px; padding: 10px; background: #fcfdff; border-color: #dce7f5; border-radius: 8px; }
+.timeline-event.current { background: #f2f7ff; border: 1.5px solid #1571f3; box-shadow: 0 0 0 2px #e7f0ff; }
+.timeline-event.current::before { content: ''; position: absolute; left: calc(50% - 7px); top: -10px; border-width: 0 7px 9px; border-style: solid; border-color: transparent transparent #1470f3; }
+.timeline-event-top { margin-bottom: 9px; gap: 6px; }
+.timeline-number { width: 21px; height: 21px; font-size: 10px; }
+.current .timeline-number { background: #0865ee; }
+.timeline-event > strong { font-size: 11px; color: #38577e; white-space: normal; }
+.timeline-path { font-size: 10px; color: #5d7698; }
+.timeline-event > p { font-size: 10px; color: #6a809d; line-height: 1.7; }
+.event-state { font-size: 8px; color: #7289a7; }
+.timeline-scrubber { order: 3; padding: 10px 16px 14px; }
+.timeline-scrubber input { height: 3px; }
+.timeline-scrubber input::-webkit-slider-thumb { width: 15px; height: 15px; border-width: 3px; border-color: #fff; background: #116bf0; box-shadow: 0 0 0 1px #c4d9f8; }
+.teacher-panel { margin: 0; border-color: #91b8ef; background: linear-gradient(135deg,#f5faff,#fff); max-height: 283px; overflow-y: auto; }
+.teacher-heading { padding: 12px 14px 0; }
+.teacher-heading > span:first-child { font-size: 12px; color: #3e659b; }
+.teacher-explanation { margin: 9px 14px 11px; font-size: 11px; line-height: 1.8; color: #5c7395; }
+.thinking-question { margin: 0 12px 10px; padding: 11px 12px; background: #eef5ff; border-color: #ddeafb; }
+.thinking-question h3 { font-size: 13px; color: #0865ee; font-weight: 650; gap: 7px; }
+.thinking-question > p { font-size: 12px; color: #2a476b; line-height: 1.75; margin: 9px 0 11px; font-weight: 550; }
+.thinking-question > button { background: #0865ee; color: #fff; border-radius: 5px; padding: 7px 13px; min-height: 32px; font-size: 11px; justify-content: center; gap: 5px; }
+.thinking-question > button:hover { background: #075bd4; }
+.answer { margin-top: 12px; }
+.misconception { font-size: 10px; padding: 1px 15px 12px; }
+.device-dock { display: none; }
+.device-dock.is-open { display: block; position: fixed; z-index: 12; left: 233px; right: 349px; bottom: 18px; max-height: 64dvh; overflow-y: auto; border: 1px solid #a8c6ed; border-radius: 12px; background: #fff; box-shadow: 0 13px 50px #304e7833; }
+.dock-bar { display: flex; align-items: center; justify-content: space-between; padding: 2px 9px 2px 15px; min-height: 37px; background: #edf5ff; border-bottom: 1px solid #d8e6f8; position: sticky; top: 0; z-index: 1; }
+.dock-bar > span { display: flex; align-items: center; gap: 8px; color: #456a9b; font-size: 11px; }
+.device-dock .device-panel { border: 0; border-radius: 0; box-shadow: none; }
+.device-dock .device-content { max-height: 37dvh; }
+.device-dock .device-context { font-size: 11px; }
+.device-dock td { font-size: 11px; }
+.device-dock th { font-size: 10px; }
+.device-dock .address-view { max-height: 42dvh; overflow-y: auto; }
+.main-footer { padding: 12px 0; font-size: 9px; color: #6d84a4; }
+.main-footer > span:last-child { display: flex; }
+.failure-panel { padding: 16px; }
+@media(min-width:1650px) {
+  .app-header { grid-template-columns: minmax(350px,440px) minmax(0,1fr) 178px; padding-inline: 26px; }
+  .workspace { grid-template-columns: 230px minmax(0,1fr); }
+  .lab-columns,.lesson-bottom { grid-template-columns: minmax(0,1fr) 354px; }
+  .main-content { padding: 14px 18px 0; }
+  .scenario-button strong { font-size: 12px; }
+  .scenario-button-content > span { font-size: 9px; }
+  .scenario-icon { width: 41px; flex-basis: 41px; }
+  .packet-fields dt,.packet-fields dd { font-size: 11px; }
+  .device-dock.is-open { left: 248px; right: 386px; }
+}
+@media(max-width:1300px) {
+  .app-header { grid-template-columns: minmax(264px,1fr) auto 135px; gap: 10px; padding: 0 16px; }
+  .brand h1 { font-size: 19px; }.brand-icon { width: 42px; height: 42px; }.brand p { font-size: 9px; }
+  .primary-controls { gap: 5px; }.primary-controls .play-button,.primary-controls .control-button,.primary-controls .labeled-control { min-width: 49px; padding: 8px; height: 59px; }
+  .speed-control { min-width: 56px; height: 59px; }.app-header .playback-bar { gap: 8px; }
+  .teacher-toggle span { display: none; }.secondary-controls { gap: 0; }.teacher-toggle { padding: 4px; }
+  .header-actions { gap: 4px; }.header-actions .scenario-status { padding: 11px 8px; }.header-actions .scenario-status strong { font-size: 22px; }
+  .workspace { grid-template-columns: 194px minmax(0,1fr); }.sidebar { padding-inline: 9px; }
+  .scenario-icon { width: 32px; flex-basis: 32px; }.scenario-button { gap: 7px; padding-inline: 7px; }.scenario-button strong { font-size: 10px; }
+  .scenario-button-content > span { font-size: 7px; }.lab-columns,.lesson-bottom { grid-template-columns: minmax(0,1fr) 287px; gap: 11px; }
+  .main-content { padding: 12px 12px 0; }.panel-heading { padding-inline: 12px; }.panel-heading h2 { font-size: 12px; }
+  .topology-actions { gap: 9px; }.topology-actions button span { display: none; }.canvas-note-secondary { display: none; }
+  .topology-legend { gap: 11px; font-size: 9px; }.topology-legend .legend-note { display: none; }
+  .timeline-panel .panel-heading .tiny-note { display: none; }.timeline-event { min-width: 163px; max-width: 163px; }
+  .device-dock.is-open { left: 206px; right: 310px; }.packet-fields dt { font-size: 9px; }.packet-fields dd { font-size: 9px; }
+}
+@media(max-width:1050px) {
+  .app-header { height: auto; min-height: 139px; grid-template-columns: 1fr auto; padding: 14px 17px 9px; row-gap: 10px; }
+  .app-header .playback-bar { grid-column: 1/-1; grid-row: 2; justify-content: space-between; justify-self: stretch; min-height: 54px; }.header-actions { grid-column: 2; grid-row: 1; }
+  .brand h1 { font-size: 20px; }.brand-icon { width: 42px; height: 42px; }.header-actions .scenario-status { padding: 8px 13px; }
+  .primary-controls .play-button,.primary-controls .control-button,.primary-controls .labeled-control { flex-direction: row; min-width: 78px; height: 44px; gap: 6px; }
+  .speed-control { flex-direction: row; height: 44px; padding-inline: 6px; min-width: 75px; }.speed-control > span { display: none; }
+  .secondary-controls { gap: 9px; }.teacher-toggle { flex-direction: row; }.teacher-toggle span { display: inline; }
+  .workspace { grid-template-columns: 177px minmax(0,1fr); }.sidebar { height: calc(100dvh - 139px); padding: 16px 8px; }
+  .scenario-button { min-height: 72px; gap: 6px; }.scenario-icon { width: 28px; flex-basis: 28px; }.scenario-button strong { font-size: 9px; }.scenario-button-content > span { flex-wrap: wrap; margin-top: 5px; font-size: 7px; }.scenario-button-content > span > span { display: none; }
+  .lab-columns { grid-template-columns: minmax(0,1fr); }.lab-right { display: block; }.inspector { height: auto; max-height: 460px; }.inspector-body { max-height: 370px; }
+  .lesson-bottom { grid-template-columns: minmax(0,1fr) 290px; }.lesson-bottom .teacher-panel { max-height: 300px; }
+  .topology-svg { height: 380px; }.topology-actions button span { display: inline; }.canvas-note-secondary { display: inline; }
+  .empty-packet { padding: 20px 8px; }.empty-packet-icon { width: 52px; height: 52px; margin-bottom: 12px; }.empty-packet p { margin: 9px 0 14px; }
+  .layer-preview { flex-direction: row; max-width: 430px; }.layer-preview span { margin: 0!important; flex: 1; font-size: 9px; }
+  .device-dock.is-open { left: 189px; right: 12px; }.device-dock .device-content { max-height: 44dvh; }
+  .main-footer > span:last-child { display: none; }.packet-fields dt,.packet-fields dd { font-size: 11px; }
+}
+@media(max-width:760px) {
+  .app-header { padding: 12px 13px 9px; min-height: 136px; gap: 10px; }.brand h1 { font-size: 17px; letter-spacing: -.3px; }.brand p { font-size: 9px; }.brand-icon { width: 38px; height: 38px; }.brand { gap: 8px; }
+  .header-actions .scenario-status strong { font-size: 19px; }.header-actions .scenario-status strong::before { display: none; }.header-actions .scenario-status strong span { font-size: 11px; }.header-actions .scenario-status { padding: 8px; }.header-actions .quiet-button { padding: 3px; }
+  .app-header .playback-bar { gap: 5px; }.primary-controls { gap: 5px; }.primary-controls .play-button,.primary-controls .control-button,.primary-controls .labeled-control { min-width: 39px; height: 49px; padding: 6px 7px; gap: 4px; flex-direction: column; border-radius: 7px; font-size: 9px; }
+  .primary-controls .control-button span { display: inline; font-size: 9px; }.primary-controls .labeled-control span { font-size: 9px; }.primary-controls .play-button svg,.primary-controls .control-button svg,.primary-controls .labeled-control svg { width: 15px; height: 15px; }
+  .speed-control { min-width: 48px; height: 49px; padding: 3px; flex-direction: column-reverse; gap: 1px; border-radius: 7px; }.speed-control > span { display: block; font-size: 9px; }.speed-control select { font-size: 11px; }
+  .secondary-controls { gap: 0; }.teacher-toggle span { display: none; }.teacher-toggle { padding: 4px; }.secondary-controls .icon-button { padding: 4px; min-width: 26px; }.secondary-controls .icon-button svg { width: 15px; }.teacher-toggle svg { width: 16px; }
+  .workspace { display: block; }.sidebar { position: static; height: auto; overflow: visible; padding: 12px; background: #fbfcff; }
+  .sidebar-heading,.sidebar-subtitle,.sidebar-learning,.sidebar-footer { display: none; }.scenario-nav { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 7px; display: grid; }
+  .scenario-button { min-height: 84px; padding: 8px 3px; gap: 6px; flex-direction: column; text-align: center; }.scenario-icon { width: 38px; height: 38px; flex-basis: auto; align-self: center; }.scenario-button strong { font-size: 9px; }.scenario-button-content > span,.scenario-button-content small,.scenario-button > svg { display: none; }
+  .fault-control { margin: 11px 0 0; padding: 8px 10px; display: flex; align-items: center; gap: 10px; }.fault-control label { font-size: 10px; white-space: nowrap; }.fault-control label > span,.fault-control p { display: none; }.fault-control select { margin: 0; font-size: 10px; flex: 1; min-width: 0; }
+  .main-content { padding: 11px 11px 0; }.page-title-row > div:first-child { gap: 5px; flex-direction: column; align-items: flex-start; }.page-title-row h2 { font-size: 17px; }.page-title-row p { font-size: 10px; }
+  .lab-columns,.lesson-bottom { grid-template-columns: minmax(0,1fr); gap: 12px; }.lesson-bottom { margin-top: 12px; }.lesson-bottom .teacher-panel { max-height: none; }
+  .topology-actions { gap: 8px; }.topology-actions button span { display: none; }.topology-actions button { min-height: 36px; }.panel-heading { padding: 0 11px; height: 46px; min-height: 46px; }.panel-heading h2 { font-size: 11px; }.check-label { font-size: 9px; }
+  .topology-svg { width: 720px; min-width: 720px; height: 346px; }.topology-viewport { overflow-x: auto; }.canvas-note { font-size: 9px; top: 9px; }.canvas-note-secondary { display: none; }
+  .topology-pan-hint { display: flex; align-items: center; justify-content: space-between; padding: 5px 11px 7px; font-size: 9px; color: #6a82a3; background: #fbfdff; }
+  .topology-pan-hint button { font-size: 10px; background: #edf4ff; border: 1px solid #d5e4fa; color: #216dc9; padding: 5px 8px; border-radius: 5px; min-height: 30px; }
+  .topology-viewport.fit-map .topology-svg { width: 100%; min-width: 0; height: auto; }
+  .topology-legend { height: 34px; gap: 13px; font-size: 9px; }.topology-legend .legend-note { display: none!important; }
+  .event-focus { padding: 12px; min-height: 82px; gap: 9px; }.event-focus-title h3 { font-size: 12px; }.event-focus p { font-size: 10px; }.event-step { height: 28px; min-width: 27px; width: 27px; }
+  .inspector { max-height: 510px; }.inspector-body { max-height: 420px; padding-inline: 11px; }.packet-fields dt,.packet-fields dd { font-size: 11px; }.packet-fields .field-text { font-size: 10px; }
+  .field-change-tag { font-size: 9px; }.old-field-value { font-size: 9px; }.layer-heading strong { font-size: 13px; }.layer-heading { min-height: 43px; }.more-fields summary { font-size: 10px; min-height: 35px; }
+  .timeline-events { min-height: 157px; }.timeline-event { min-width: 173px; max-width: 173px; }.timeline-event > strong { font-size: 11px; }.timeline-event > p { font-size: 10px; }
+  .timeline-panel .panel-heading .tiny-note { display: none; }.teacher-explanation { font-size: 12px; }.thinking-question > p { font-size: 13px; }.thinking-question > button { min-height: 39px; }.teacher-heading > span:first-child { font-size: 13px; }
+  .device-dock.is-open { left: 10px; right: 10px; bottom: 10px; max-height: 75dvh; }.device-dock .device-content { max-height: 48dvh; }.device-dock .device-panel-header { padding: 0 12px; }.device-dock .device-context { font-size: 10px; }.device-dock td { font-size: 10px; }.device-dock .address-view { max-height: 50dvh; }.device-dock th { font-size: 9px; }
+  .main-footer { font-size: 8px; padding: 12px 1px; }.help-modal h2 { font-size: 19px; }
+}
+@media(max-width:390px) {
+  .app-header { padding-inline: 10px; grid-template-columns: 1fr auto; column-gap: 5px; }.brand h1 { font-size: 15px; }.brand p { font-size: 8px; }.brand-icon { width: 34px; height: 34px; }.brand-icon svg { width: 22px; }
+  .header-actions .scenario-status { padding: 6px; }.header-actions .quiet-button { display: none; }.primary-controls { gap: 4px; }.primary-controls .play-button,.primary-controls .control-button,.primary-controls .labeled-control { min-width: 37px; padding-inline: 6px; }.speed-control { min-width: 44px; }.teacher-toggle { padding: 2px; }
+  .scenario-button strong { font-size: 8px; }.scenario-icon { width: 36px; height: 36px; }
+}
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition-duration: .01ms!important; animation-duration: .01ms!important; } }
