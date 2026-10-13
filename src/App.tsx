@@ -8,9 +8,46 @@ import TopologyView from './components/TopologyView';
 import PacketInspector from './components/PacketInspector';
 import DeviceInspector from './components/DeviceInspector';
 import ScenarioSidebar from './components/ScenarioSidebar';
+import LabNavigation from './labs/LabNavigation';
+import DigitalSignalLab from './labs/DigitalSignalLab';
+import DataSwitchingLab from './labs/DataSwitchingLab';
+import type { LabRoute } from './labs/types';
 
 
 export default function App() {
+  const routeFromHash = (): LabRoute => {
+    const route = window.location.hash.replace(/^#\/?/, '');
+    if (route === 'signal-encoding' || route === 'data-switching') return route;
+    return 'packet';
+  };
+  const [activeLab, setActiveLab] = useState<LabRoute>(routeFromHash);
+
+  useEffect(() => {
+    const handleHashChange = () => setActiveLab(routeFromHash());
+    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
+    };
+  }, []);
+
+  const navigate = (route: LabRoute) => {
+    setActiveLab(route);
+    const nextHash = route === 'packet' ? '' : `#/${route}`;
+    window.history.pushState(null, '', `${window.location.pathname}${window.location.search}${nextHash}`);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  return <div className="lab-suite-shell">
+    <LabNavigation active={activeLab} onChange={navigate}/>
+    {activeLab === 'packet' && <PacketJourneyLab/>}
+    {activeLab === 'signal-encoding' && <DigitalSignalLab/>}
+    {activeLab === 'data-switching' && <DataSwitchingLab/>}
+  </div>;
+}
+
+function PacketJourneyLab() {
   const [scenarioId, setScenarioId] = useState<ScenarioId>('lan-ping');
   const [fault, setFault] = useState<FaultId>('none');
   const scenario = useMemo(() => createScenario(scenarioId, fault), [scenarioId, fault]);

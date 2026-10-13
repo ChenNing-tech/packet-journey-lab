@@ -5,5 +5,6 @@ import './styles.css';
 import './classroom.css';
 import './toolbar.css';
 import './workbench.css';
+import './labs.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
